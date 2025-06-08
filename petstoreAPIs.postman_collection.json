@@ -1,0 +1,521 @@
+{
+	"info": {
+		"_postman_id": "24892508-3c6b-47f5-a86e-e0b33f7705be",
+		"name": "petstoreAPIs",
+		"description": "**Project Name : PestoreAPIs**\n\n**Project Scope: User Endpoint**\n\n**Project Lead : David udoh**\n\n**Project Date: 07/06/25**  \n  \n  \nSteps:\n\n- Access and open Open Swagger\n    \n- Edit the swagger to verify expected schemas\n    \n- In JSON body, use 1 for active status, 0 for inactive, unique id, username and email.\n    \n- Open postman , Create project in collection named petstoreAPIs\n    \n- In petstoreAPIs, create new folders for users, store and pet Endpoint showing organisation.\n    \n- In the userEndpoint folder ( scope of work) run all endpoints for users from swagger.\n    \n- In the userEndpoint folder, create another folder for petstore user flow, denoting CRUD for API chaining and run. Run API requests in sequence (POST → GET → PUT → DELETE).",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16554325",
+		"_collection_link": "https://www.postman.com/bold-shuttle-739357/workspace/enyata-qa-technical-assessment/collection/16554325-24892508-3c6b-47f5-a86e-e0b33f7705be?action=share&source=collection_link&creator=16554325"
+	},
+	"item": [
+		{
+			"name": "usersEndpoint",
+			"item": [
+				{
+					"name": "Petstore user flow (API chaining)",
+					"item": [
+						{
+							"name": "post user",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"User created successfully\", function() {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"// Save username for next requests",
+											"const username = \"oppo\";",
+											"pm.environment.set(\"username\", username);",
+											"",
+											"",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"id\": 16,\n  \"username\": \"oppo\",\n  \"firstName\": \"reno\",\n  \"lastName\": \"naso\",\n  \"email\": \"opporeno@gmail.com\",\n  \"password\": \"s@menow12\",\n  \"phone\": \"2349999999999\",\n  \"userStatus\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://petstore.swagger.io/v2/user",
+									"protocol": "https",
+									"host": [
+										"petstore",
+										"swagger",
+										"io"
+									],
+									"path": [
+										"v2",
+										"user"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get user",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://petstore.swagger.io/v2/user/{{username}}",
+									"protocol": "https",
+									"host": [
+										"petstore",
+										"swagger",
+										"io"
+									],
+									"path": [
+										"v2",
+										"user",
+										"{{username}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update user",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"id\": 16,\n  \"username\": \"oppo\",\n  \"firstName\": \"updated5g\",\n  \"lastName\": \"naso\",\n  \"email\": \"oppo5g@gmail.com\",\n  \"password\": \"s@menow12\",\n  \"phone\": \"2349999999999\",\n  \"userStatus\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://petstore.swagger.io/v2/user/{{username}}",
+									"protocol": "https",
+									"host": [
+										"petstore",
+										"swagger",
+										"io"
+									],
+									"path": [
+										"v2",
+										"user",
+										"{{username}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete user",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "https://petstore.swagger.io/v2/user/{{username}}",
+									"protocol": "https",
+									"host": [
+										"petstore",
+										"swagger",
+										"io"
+									],
+									"path": [
+										"v2",
+										"user",
+										"{{username}}"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"description": "CRUD API Chaining using the Create, Read, Update Delete methods."
+				},
+				{
+					"name": "Create user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"//Ensure Data type",
+									"pm.test(\"Validate field types\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    pm.expect(jsonData.code).to.be.a(\"number\");  // Code should be a number",
+									"    pm.expect(jsonData.type).to.be.a(\"string\");  // Type should be a string",
+									"    pm.expect(jsonData.message).to.be.a(\"string\"); // Message should be a string",
+									"});",
+									"",
+									"//Validate no empty fields",
+									"pm.test(\"Validate no empty fields\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    pm.expect(jsonData.type).to.not.be.empty;",
+									"    pm.expect(jsonData.message).to.not.be.empty;",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 10,\n    \"username\": \"femi456\",\n    \"firstName\": \"Femi\",\n    \"lastName\": \"Fresh\",\n    \"email\": \"femi_fresh@gmail.com\",\n    \"password\": \"#Femis02\",\n    \"phone\": \"2349056156228\",\n    \"userStatus\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://petstore.swagger.io/v2/user",
+							"protocol": "https",
+							"host": [
+								"petstore",
+								"swagger",
+								"io"
+							],
+							"path": [
+								"v2",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create multiple users with array",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"//Ensure Data type",
+									"pm.test(\"Validate field types\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    pm.expect(jsonData.code).to.be.a(\"number\");  // Code should be a number",
+									"    pm.expect(jsonData.type).to.be.a(\"string\");  // Type should be a string",
+									"    pm.expect(jsonData.message).to.be.a(\"string\"); // Message should be a string",
+									"});",
+									"",
+									"//Validate no empty fields",
+									"pm.test(\"Validate no empty fields\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    pm.expect(jsonData.type).to.not.be.empty;",
+									"    pm.expect(jsonData.message).to.not.be.empty;",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n    {\n        \"id\": 11,\n        \"username\": \"starboy01\",\n        \"firstName\": \"Senior\",\n        \"lastName\": \"Man\",\n        \"email\": \"senior-man@gmail.com\",\n        \"password\": \"St@rs234\",\n        \"phone\": \"2348037777777\",\n        \"userStatus\": 0\n    },\n    {\n        \"id\": 12,\n        \"username\": \"hurbon\",\n        \"firstName\": \"Ayo\",\n        \"lastName\": \"Nice\",\n        \"email\": \"ayonice@gmail.com\",\n        \"password\": \"ay0n1ce\",\n        \"phone\": \"234707684930\",\n        \"userStatus\": 1\n    }\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://petstore.swagger.io/v2/user/createWithArray",
+							"protocol": "https",
+							"host": [
+								"petstore",
+								"swagger",
+								"io"
+							],
+							"path": [
+								"v2",
+								"user",
+								"createWithArray"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create users with list",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"//Ensure Data type",
+									"pm.test(\"Validate field types\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    pm.expect(jsonData.code).to.be.a(\"number\");  // Code should be a number",
+									"    pm.expect(jsonData.type).to.be.a(\"string\");  // Type should be a string",
+									"    pm.expect(jsonData.message).to.be.a(\"string\"); // Message should be a string",
+									"});",
+									"",
+									"//Validate no empty response fields",
+									"pm.test(\"Validate no empty fields\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    pm.expect(jsonData.type).to.not.be.empty;",
+									"    pm.expect(jsonData.message).to.not.be.empty;",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n    {\n        \"id\": 13,\n        \"username\": \"nesto\",\n        \"firstName\": \"Ernest\",\n        \"lastName\": \"Skills\",\n        \"email\": \"skillnesto@yahoo.com\",\n        \"password\": \"arch!t4\",\n        \"phone\": \"2347060504030\",\n        \"userStatus\": 1\n    },\n    {\n        \"id\": 22,\n        \"username\": \"kissme\",\n        \"firstName\": \"man\",\n        \"lastName\": \"Elvis\",\n        \"email\": \"manelvo@yahoo.com\",\n        \"password\": \"english\",\n        \"phone\": \"2347023236661\",\n        \"userStatus\": 0\n    },\n    {\n        \"id\": 14,\n        \"username\": \"techbro\",\n        \"firstName\": \"Olu\",\n        \"lastName\": \"Simple\",\n        \"email\": \"olu.simple@yahoo.com\",\n        \"password\": \"M@n0fgod\",\n        \"phone\": \"2347111222333\",\n        \"userStatus\": 1\n    }\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://petstore.swagger.io/v2/user/createWithList",
+							"protocol": "https",
+							"host": [
+								"petstore",
+								"swagger",
+								"io"
+							],
+							"path": [
+								"v2",
+								"user",
+								"createWithList"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get user by username/techbro",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response contains expected fields\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"id\");//unique identifier",
+									"    pm.expect(jsonData.id).to.be.a(\"number\"); ",
+									"    pm.expect(jsonData).to.have.property(\"username\");//required for identification and authentication ",
+									"    pm.expect(jsonData.username).to.be.a(\"string\"); ",
+									"    pm.expect(jsonData).to.have.property(\"email\");//Neccessary for communication or login recovery",
+									"    pm.expect(jsonData).to.have.property(\"password\");//required for authentication",
+									"    pm.expect(jsonData).to.have.property(\"userStatus\"); //shows if a user is active (1) or not (0)",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://petstore.swagger.io/v2/user/techbro",
+							"protocol": "https",
+							"host": [
+								"petstore",
+								"swagger",
+								"io"
+							],
+							"path": [
+								"v2",
+								"user",
+								"techbro"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update user",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 10,\n    \"username\": \"femfem\",\n    \"firstName\": \"Femi\",\n    \"lastName\": \"Fresh\",\n    \"email\": \"femi_fresh@gmail.com\",\n    \"password\": \"#Femis02\",\n    \"phone\": \"2349056156228\",\n    \"userStatus\": 0\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://petstore.swagger.io/v2/user/femi456",
+							"protocol": "https",
+							"host": [
+								"petstore",
+								"swagger",
+								"io"
+							],
+							"path": [
+								"v2",
+								"user",
+								"femi456"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get updated user",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://petstore.swagger.io/v2/user/femfem",
+							"protocol": "https",
+							"host": [
+								"petstore",
+								"swagger",
+								"io"
+							],
+							"path": [
+								"v2",
+								"user",
+								"femfem"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete user",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://petstore.swagger.io/v2/user/femfem",
+							"protocol": "https",
+							"host": [
+								"petstore",
+								"swagger",
+								"io"
+							],
+							"path": [
+								"v2",
+								"user",
+								"femfem"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get user login",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://petstore.swagger.io/v2/user/login?username=starboy01&password=St%40rs234",
+							"protocol": "https",
+							"host": [
+								"petstore",
+								"swagger",
+								"io"
+							],
+							"path": [
+								"v2",
+								"user",
+								"login"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "starboy01"
+								},
+								{
+									"key": "password",
+									"value": "St%40rs234"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get user logout",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://petstore.swagger.io/v2/user/logout",
+							"protocol": "https",
+							"host": [
+								"petstore",
+								"swagger",
+								"io"
+							],
+							"path": [
+								"v2",
+								"user",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "All endpoints for user"
+		},
+		{
+			"name": "storesEndpoint",
+			"item": []
+		},
+		{
+			"name": "petsEndpoint",
+			"item": []
+		}
+	]
+}
