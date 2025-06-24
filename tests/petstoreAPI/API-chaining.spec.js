@@ -43,7 +43,7 @@ test ('Petstore user flow', async ({request}) => {
 
     // create a post
     const postRes = await request.post(baseurl + '/user', postOptions)
-    console.log("Create Response:", await postRes.json()); //Log responsebody after  creating user
+    console.log("Create Response:", await postRes.json()); //Log responsebody after creating user
     expect(postRes.status()).toBe(200); // Check if the post was created successfully
 
     // read post
@@ -54,7 +54,12 @@ test ('Petstore user flow', async ({request}) => {
     // update post
     const putRes = await request.put(baseurl + '/user/neverwalkalone', putOptions)
     console.log("PUT Response:", await putRes.json());
-    expect(putRes.status()).toBe(200); // Check if the post was created successfully
+    expect(putRes.status()).toBe(200); // Check if the post was updated successfully
+
+    // fetch updated user to verify changes
+    const getUpdatedRes = await request.get(baseurl + '/user/2025champions');
+    const updatedUser = await getUpdatedRes.json();
+    expect(updatedUser.userStatus).toBe(1); // Assert that the userStatus was updated 
 
     // delete post
     const delRes = await request.delete(baseurl + '/user/2025champions')
