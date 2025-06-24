@@ -2,9 +2,7 @@ import { test, expect } from '@playwright/test'
 
 test ('Petstore user flow', async ({request}) => {
 
-    // CRUD create>read>update>delete
-    // Construct data
-
+    // CRUD - This test will create a user, read, update (username and userStatus), and then delete.
     const baseurl = 'https://petstore.swagger.io/v2'
 
     const postContent = {
